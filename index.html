@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAM EATER - Ram (Re:Zero) Physical Memory Devourer</title>
+  <meta name="description" content="Watch Ram from Re:Zero literally consume your computer's RAM, deliver scathing roasts to Barusu, and catch real DDR memory sticks in an arcade mini-game!">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=M+PLUS+Rounded+1c:wght@700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./src/style.css">
+  <link rel="icon" type="image/png" href="/assets/ram/ram-render.png">
+</head>
+<body>
+  <!-- Ambient floating particles background -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="app-container">
+    <!-- Header HUD -->
+    <header class="header-hud">
+      <div class="logo-group">
+        <div class="header-avatar-circle">
+          <img src="/assets/ram/ram-render.png" alt="Ram Avatar" class="header-avatar-img" />
+        </div>
+        <div class="logo-badge">RAM ⚡</div>
+        <div class="logo-text">
+          <h1>Ram Eater <span style="font-size: 0.9rem; opacity: 0.8; font-weight: 500;">ラム</span></h1>
+          <p>Re:Zero Demon Maid Physical Memory Allocator</p>
+        </div>
+      </div>
+
+      <div class="hud-actions">
+        <button id="soundToggle" class="hud-btn active" title="Toggle Sound FX">
+          <span id="soundIcon">🔊</span> Sound: ON
+        </button>
+        <button id="speechToggle" class="hud-btn active" title="Toggle Tsundere Voice Synthesis">
+          <span id="speechIcon">🗣️</span> Voice: ON
+        </button>
+        <button id="safetyToggle" class="hud-btn active" title="Toggle 3GB Safety Cap">
+          <span>🛡️</span> Cap: 3GB SAFE
+        </button>
+      </div>
+    </header>
+
+    <!-- Main 2-Column Content Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Character Stage & Live Dialogue -->
+      <section class="character-column">
+        <div class="stage-card">
+          <!-- Dialogue Speech Bubble -->
+          <div class="dialogue-box" id="dialogueBox">
+            <div class="dialogue-speaker">
+              <span class="speaker-name">
+                <img src="/assets/ram/ram-render.png" class="speaker-thumb" alt="Ram" />
+                <span>Ram (ラム)</span>
+              </span>
+              <span class="speaker-mood" id="speakerMood">SMUG</span>
+            </div>
+            <div class="dialogue-text" id="dialogueText">
+              "Hmph. Another incompetent Barusu has wandered into Roswaal's estate. Go on, feed me your physical RAM if you dare."
+            </div>
+          </div>
+
+          <!-- Interactive Character Stage -->
+          <div class="character-stage" id="characterContainer">
+            <!-- Real anime character photo & expressions rendered here -->
+          </div>
+
+          <!-- Hints / Easter Egg Pills -->
+          <div class="character-tips">
+            <span class="tip-pill">✨ Click thumbnails to swap Ram expressions</span>
+            <span class="tip-pill">🌸 Poke Ram photo: Test her patience</span>
+            <span class="tip-pill">⚡ High RAM feeds: Triggers El Fura GIF!</span>
+          </div>
+        </div>
+
+        <!-- Arcade Mini-Game Banner -->
+        <div class="arcade-banner">
+          <div class="arcade-info">
+            <h3>🎮 Ram's RAM Buffet (Arcade)</h3>
+            <p>Catch falling DDR5 sticks and sweet potatoes with real photo sprites!</p>
+          </div>
+          <button id="launchGameBtn" class="btn-play-game">
+            <span>Play Arcade</span> ➔
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Column: Memory Eating Controls & Telemetry -->
+      <section class="controls-column">
+        <!-- Telemetry & Live Memory Dashboard -->
+        <div class="card telemetry-card">
+          <div class="card-title">
+            <div class="card-title-left">
+              <span>📊 Real-Time Memory Telemetry</span>
+            </div>
+            <span class="badge-pill real-ram" id="telemetryBadge">REAL DIRTY RAM</span>
+          </div>
+
+          <!-- Telemetry Numerical Grid -->
+          <div class="telemetry-grid">
+            <div class="stat-box highlight">
+              <span class="stat-label">Ram's Active Meal</span>
+              <div class="stat-value">
+                <span id="allocatedMB">0.00</span>
+                <span class="stat-unit">MB</span>
+              </div>
+              <span class="stat-sub" id="allocatedSub">0 chunks allocated</span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Peak Digested</span>
+              <div class="stat-value">
+                <span id="peakMB">0.00</span>
+                <span class="stat-unit">MB</span>
+              </div>
+              <span class="stat-sub">Session highest</span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Browser Heap Used</span>
+              <div class="stat-value">
+                <span id="heapUsedMB">--</span>
+                <span class="stat-unit">MB</span>
+              </div>
+              <span class="stat-sub" id="heapLimitSub">Limit: -- MB</span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Demonic Hunger</span>
+              <div class="stat-value">
+                <span id="hungerLevel">0</span>
+                <span class="stat-unit">%</span>
+              </div>
+              <span class="stat-sub" id="demonStatus">Resting</span>
+            </div>
+          </div>
+
+          <!-- Memory Pressure Bar -->
+          <div class="pressure-container">
+            <div class="pressure-header">
+              <span>Memory Pressure / Tab Capacity</span>
+              <span id="pressurePct">0%</span>
+            </div>
+            <div class="pressure-track">
+              <div class="pressure-fill" id="pressureFill"></div>
+            </div>
+          </div>
+
+          <!-- Memory History Canvas Chart -->
+          <div class="graph-container">
+            <canvas id="memoryGraphCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Feeding Controls Card with REAL Computer RAM Photos -->
+        <div class="card feeding-card">
+          <div class="card-title">
+            <div class="card-title-left">
+              <span>🍽️ Feed Ram Real Memory Sticks</span>
+            </div>
+            <span class="badge-pill demon-horn">PHYSICAL ALLOCATOR</span>
+          </div>
+
+          <!-- Feeding Buttons with Real Hardware Photos -->
+          <div class="feeding-grid">
+            <button class="feed-btn real-hw-btn" data-mb="64">
+              <div class="hw-img-wrap">
+                <img src="/assets/hardware/sodimm-stick.jpg" alt="Laptop SO-DIMM RAM" />
+              </div>
+              <span class="btn-badge">SO-DIMM</span>
+              <span class="btn-amount">64 <span class="btn-sub">MB</span></span>
+            </button>
+
+            <button class="feed-btn real-hw-btn" data-mb="128">
+              <div class="hw-img-wrap">
+                <img src="/assets/hardware/ddr4-crucial.jpg" alt="Crucial DDR4 RAM" />
+              </div>
+              <span class="btn-badge">DDR4 DIMM</span>
+              <span class="btn-amount">128 <span class="btn-sub">MB</span></span>
+            </button>
+
+            <button class="feed-btn real-hw-btn" data-mb="256">
+              <div class="hw-img-wrap">
+                <img src="/assets/hardware/ddr4-transparent.png" alt="16GB DDR4 RAM" />
+              </div>
+              <span class="btn-badge">16GB DDR4</span>
+              <span class="btn-amount">256 <span class="btn-sub">MB</span></span>
+            </button>
+
+            <button class="feed-btn real-hw-btn" data-mb="512">
+              <div class="hw-img-wrap">
+                <img src="/assets/hardware/corsair-rgb.jpg" alt="Corsair Vengeance RGB RAM" />
+              </div>
+              <span class="btn-badge">Corsair RGB</span>
+              <span class="btn-amount">512 <span class="btn-sub">MB</span></span>
+            </button>
+          </div>
+
+          <!-- Special Feeding Controls -->
+          <div class="special-feed-row">
+            <button id="overloadBtn" class="btn-overload real-overload-btn">
+              <img src="/assets/hardware/viper-rgb.png" alt="Viper Gaming RAM" class="btn-inline-hw" />
+              <span>⚡ BARUSU OVERLOAD (AUTO-FEAST)</span>
+            </button>
+            <button id="potatoBtn" class="btn-potato real-potato-btn">
+              <img src="/assets/hardware/sweet-potato.jpg" alt="Real Steamed Sweet Potato" class="btn-inline-hw" />
+              <span>🍠 Steamed Potato</span>
+            </button>
+          </div>
+
+          <!-- Emergency Purge Button -->
+          <button id="purgeBtn" class="btn-purge">
+            <span>🤮</span> SPIT IT OUT! (Purge Allocated Physical RAM)
+          </button>
+        </div>
+
+        <!-- Barusu Rig Roasting Chamber -->
+        <div class="card roast-card">
+          <div class="card-title">
+            <div class="card-title-left">
+              <span>🔥 Barusu Rig Diagnostic</span>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Hardware Inspector</span>
+          </div>
+
+          <div class="rig-specs">
+            <div class="spec-chip">
+              <span class="spec-name">Device Memory</span>
+              <span class="spec-val" id="specRam">--</span>
+            </div>
+            <div class="spec-chip">
+              <span class="spec-name">CPU Cores</span>
+              <span class="spec-val" id="specCores">--</span>
+            </div>
+            <div class="spec-chip">
+              <span class="spec-name">Graphics</span>
+              <span class="spec-val" id="specGpu" title="GPU info">--</span>
+            </div>
+          </div>
+
+          <button id="roastBtn" class="btn-roast">
+            <span>💬</span> Roast My Rig, Ram!
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-bar">
+      <p>Ram Eater • Re:Zero kara Hajimeru Isekai Seikatsu Fan Web Experiment with Real Anime & Hardware Photos</p>
+      <p style="opacity: 0.6; font-size: 0.75rem;">Memory allocations are resident in your browser tab's JavaScript heap. Press "SPIT IT OUT" at any time to reclaim 100% of memory.</p>
+    </footer>
+  </div>
+
+  <!-- Mini-Game Modal -->
+  <div class="modal-overlay" id="minigameModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🎮 Ram's RAM Buffet: Feast of the Demon Maid</h2>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="minigameCanvas"></canvas>
+      </div>
+
+      <div class="game-controls-help">
+        Move mouse or use <strong>← / →</strong> or <strong>A / D</strong> to catch real DDR sticks & sweet potatoes. Avoid Barusu's dirty jerseys!
+      </div>
+
+      <!-- Game Over Card (hidden until game ends) -->
+      <div class="game-over-card" id="gameOverCard" style="display: none;">
+        <div class="game-over-rank" id="goRank">S</div>
+        <div class="game-over-remark" id="goRemark">Remark</div>
+        <div class="game-over-actions">
+          <button id="restartGameBtn" class="hud-btn active" style="padding: 0.7rem 1.4rem; font-size: 1rem;">
+            Play Again 🔄
+          </button>
+          <button id="applyMemoryBtn" class="hud-btn" style="padding: 0.7rem 1.4rem; font-size: 1rem;">
+            Feed to Ram Real Tab 🍽️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vite entry script -->
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
