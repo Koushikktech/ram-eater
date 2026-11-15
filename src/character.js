@@ -21,31 +21,31 @@ export class RamCharacter {
 
     // Real anime image paths
     this.images = {
-      default: '/assets/ram/ram-render.png',
-      smug: '/assets/ram/ram-bd-3.png',
-      tea: '/assets/ram/ram-bd-1.png',
-      judging: '/assets/ram/ram-bd-2.png',
-      angry: '/assets/ram/ram-bd-5.png',
-      eating: '/assets/ram/ram-bd-8.png',
-      demon: '/assets/ram/ram-bd-12.png',
-      demonGif: '/assets/ram/ram-el-fura.gif',
-      potato: '/assets/ram/ram-bd-10.png',
-      clairvoyance: '/assets/ram/ram-clairvoyance.gif',
-      ep40: '/assets/ram/ram-ep40.png',
-      ep41: '/assets/ram/ram-ep41.png',
-      ep48: '/assets/ram/ram-ep48.png',
-      sideGlance: '/assets/ram/ram-bd-4.png',
-      closeUp: '/assets/ram/ram-bd-6.png'
+      default: './assets/ram/ram-render.png',
+      smug: './assets/ram/ram-bd-3.png',
+      tea: './assets/ram/ram-bd-1.png',
+      judging: './assets/ram/ram-bd-2.png',
+      angry: './assets/ram/ram-bd-5.png',
+      eating: './assets/ram/ram-bd-8.png',
+      demon: './assets/ram/ram-bd-12.png',
+      demonGif: './assets/ram/ram-el-fura.gif',
+      potato: './assets/ram/ram-bd-10.png',
+      clairvoyance: './assets/ram/ram-clairvoyance.gif',
+      ep40: './assets/ram/ram-ep40.png',
+      ep41: './assets/ram/ram-ep41.png',
+      ep48: './assets/ram/ram-ep48.png',
+      sideGlance: './assets/ram/ram-bd-4.png',
+      closeUp: './assets/ram/ram-bd-6.png'
     };
 
     // Real computer RAM stick photos
     this.ramSticks = {
-      ddr4: '/assets/hardware/ddr4-transparent.png',
-      viperRgb: '/assets/hardware/viper-rgb.png',
-      corsair: '/assets/hardware/corsair-rgb.jpg',
-      sodimm: '/assets/hardware/sodimm-stick.jpg',
-      ddr5: '/assets/hardware/ddr5-stick.jpg',
-      potato: '/assets/hardware/sweet-potato.jpg'
+      ddr4: './assets/hardware/ddr4-transparent.png',
+      viperRgb: './assets/hardware/viper-rgb.png',
+      corsair: './assets/hardware/corsair-rgb.jpg',
+      sodimm: './assets/hardware/sodimm-stick.jpg',
+      ddr5: './assets/hardware/ddr5-stick.jpg',
+      potato: './assets/hardware/sweet-potato.jpg'
     };
 
     this.render();

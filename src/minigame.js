@@ -25,12 +25,12 @@ export class RamMinigame {
 
     // Preload real photos
     this.assets = {
-      ram: this.loadImage('/assets/ram/ram-render.png'),
-      ramDemon: this.loadImage('/assets/ram/ram-bd-12.png'),
-      ddr4: this.loadImage('/assets/hardware/ddr4-transparent.png'),
-      viper: this.loadImage('/assets/hardware/viper-rgb.png'),
-      corsair: this.loadImage('/assets/hardware/corsair-rgb.jpg'),
-      potato: this.loadImage('/assets/hardware/sweet-potato.jpg')
+      ram: this.loadImage('./assets/ram/ram-render.png'),
+      ramDemon: this.loadImage('./assets/ram/ram-bd-12.png'),
+      ddr4: this.loadImage('./assets/hardware/ddr4-transparent.png'),
+      viper: this.loadImage('./assets/hardware/viper-rgb.png'),
+      corsair: this.loadImage('./assets/hardware/corsair-rgb.jpg'),
+      potato: this.loadImage('./assets/hardware/sweet-potato.jpg')
     };
 
     // Player (Ram) state
